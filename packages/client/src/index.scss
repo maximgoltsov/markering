@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Shnobel";
+  src: url("./assets/fonts/Shnobel-Regular.otf") format("otf");
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+}
+
+.app {
+  height: 100vh;
+  width: 100vw;
+
+  background-color: #CD718E;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+  padding: 0 20px;
+
+  @media screen and (max-width: 425px) {
+    margin-top: 20px;
+  }
+}
+
+.customButton {
+  font-family: 'Shnobel';
+  color: white;
+  background-color: transparent;
+  font-size: 40px;
+  border: 2px solid white;
+  border-radius: 35px;
+  padding: 10px 50px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #7F4156;
+    border: 2px solid #7F4156;
+  }
+
+  &:disabled {
+    cursor: default;
+    color: #7F4156;
+    background-color: white;
+    border: none;
+  }
+
+  @media screen and (max-width: 425px) {
+    font-size: 30px;
+    width: 100%;
+    max-width: 302px;
+  }
+}
+
+input[type="text"] {
+  box-sizing: border-box;
+  border: none;
+  padding: 11px 28px;
+  border-radius: 25px;
+  font-size: 20px;
+  max-width: 302px;
+  width: 100%;
+
+  &:disabled {
+    opacity: 0.5;
+    background-color: white;
+  }
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  background-color: #7F4156;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 20px;
+  height: 20px;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+
+  &:checked::before {
+    transform: scale(0.8);
+  }
+
+  &::before {
+    content: "";
+    width: 15px;
+    height: 24px;
+    margin-left: 4px;
+    background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.375977 8.48523L2.04167 6.81954L7.4286 12.2065L5.76291 13.8722L0.375977 8.48523Z' fill='white'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M4.91211 13.0216L13.2095 4.72423L14.8752 6.38992L6.5778 14.6873L4.91211 13.0216Z' fill='white'/%3E%3C/svg%3E");
+    // clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transform-origin: bottom left;
+    transition: 120ms transform ease-in-out;
+    // box-shadow: inset 1em 1em white;
+    // background-color: CanvasText;
+  }
+}
+
+.clouds {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  overflow: hidden;
+
+  &_cloud {
+    position: fixed;
+    right: 86px;
+    top: 222px;
+  }
+
+  &_cloud1 {
+    position: fixed;
+    right: 66px;
+    bottom: 96px;
+  }
+
+  &_cloud2 {
+    position: fixed;
+    right: 273px;
+    top: 293px;
+
+    @media screen and (max-width: 1100px) {
+      display: none;
+    }
+  }
+
+  &_cloud3 {
+    position: fixed;
+    left: 325px;
+    top: 71px;
+  }
+
+  &_cloud4 {
+    position: fixed;
+    right: 106px;
+    bottom: 354px;
+  }
+
+  &_cloud5 {
+    position: fixed;
+    left: 0px;
+    bottom: 114px;
+  }
+
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
+}
