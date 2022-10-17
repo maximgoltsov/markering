@@ -13,7 +13,6 @@ const client = createTRPCProxyClient<AppRouter>({
       }
     })
   ],
-
 });
 
 export default client;

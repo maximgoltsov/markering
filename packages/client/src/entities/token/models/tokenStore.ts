@@ -4,16 +4,18 @@ import client from "../../../shared/api/client";
 
 interface TokenStore {
   token: string;
-  getToken: () => void;
+  checkToken: () => void;
 }
 
 export const useTokenStore = create(
   persist<TokenStore>(
-    (set) => ({
+    (set, get) => ({
       token: "",
-      getToken: async () => {
-        const token = await client.createToken.query();
-        set({ token });
+      checkToken: async () => {
+        if (get().token === "") {
+          const token = await client.createToken.query();
+          set({ token });
+        }
       },
     }),
     {

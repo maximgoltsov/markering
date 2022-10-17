@@ -4,12 +4,12 @@ import VkSvg from "../../assets/img/vk.svg";
 import OkSvg from "../../assets/img/ok.svg";
 import TwSvg from "../../assets/img/tw.svg";
 import FacebookSvg from "../../assets/img/facebook.svg";
-
 import "./MarketingForm.scss";
 import { useFormStore } from "../../entities/form/models/formStore";
 import classNames from "classnames";
 import { z } from "zod";
 import SuccessMessage from "../SuccessMessage/SuccessMessage";
+import Loader from "../../shared/ui/Loader";
 
 enum SOCIALS {
   vk = "Вконтакте",
@@ -20,7 +20,8 @@ enum SOCIALS {
 
 const MarketingForm: React.FC = () => {
   const [selectedSocial, setSelectedSocial] = useState<SOCIALS>();
-  const { user, getUser, updateUser } = useFormStore();
+  const { user, getUser, updateUser, submitUser, isLoading } =
+    useFormStore();
 
   const [isEmailValid, setIsEmailValid] = useState(!!user.email);
 
@@ -48,9 +49,17 @@ const MarketingForm: React.FC = () => {
 
   const submitForm = () => {
     if (mailRef.current) {
-      updateUser({ ...user, email: mailRef.current.value });
+      submitUser({ ...user, email: mailRef.current.value });
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="loader-full">
+        <Loader />
+      </div>
+    );
+  }
 
   if (user.shared && !!user.email) {
     return <SuccessMessage />;

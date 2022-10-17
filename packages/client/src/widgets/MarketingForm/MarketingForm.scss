@@ -23,6 +23,10 @@
     max-width: 300px;
     text-align: center;
     margin-bottom: 40px;
+
+    @media screen and (max-width: 425px) {
+      margin-bottom: 10px;
+    }
   }
 
   &_step {
@@ -32,6 +36,10 @@
 
     &:not(:last-of-type) {
       margin-bottom: 20px;
+
+      @media screen and (max-width: 425px) {
+        margin-bottom: 10px;
+      }
     }
   }
 
@@ -89,7 +97,7 @@
     width: 100%;
 
     @media screen and (max-width: 425px) {
-      margin-top: 10px;
+      margin-top: 20px;
     }
   }
 
@@ -100,6 +108,7 @@
 
     &-inactive {
       opacity: 0.5;
+
       &:hover {
         cursor: default;
       }
@@ -115,4 +124,12 @@
       column-gap: 16px;
     }
   }
+}
+
+.loader-full {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }

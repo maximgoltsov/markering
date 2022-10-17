@@ -10,8 +10,6 @@ import Cloud4Svg from "./assets/img/cloud-4.svg";
 import Cloud5Svg from "./assets/img/cloud-5.svg";
 
 const AppContent = () => {
-  // const hello = trpc.useQuery(["hello"]);
-
   return (
     <div className="app">
       <Header />
