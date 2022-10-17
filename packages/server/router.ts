@@ -1,28 +1,9 @@
-import * as trpcExpress from "@trpc/server/adapters/express";
-import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
-import { User, UserDTO } from "./models/user";
+import { initTRPC, TRPCError } from "@trpc/server";
+import { UserDTO } from "./models/user";
 import { z } from "zod";
-
-const data: User[] = [];
-
-const getUser = (token?: string) => {
-  if (token) {
-    return data.find((user) => user.token === token);
-  }
-  return undefined;
-};
-
-export async function createContext({
-  req,
-  res,
-}: trpcExpress.CreateExpressContextOptions) {
-  const token = req.headers.authorization;
-  const user = getUser(token);
-  return {
-    user,
-  };
-}
-type Context = inferAsyncReturnType<typeof createContext>;
+import { v4 as uuidv4 } from "uuid";
+import { prisma } from ".";
+import { Context } from "./context";
 
 export const t = initTRPC.context<Context>().create();
 
@@ -36,18 +17,20 @@ const isAuthed = t.middleware(({ next, ctx }) => {
     },
   });
 });
-// you can reuse this for any procedure
 const protectedProcedure = t.procedure.use(isAuthed);
 
 export const appRouter = t.router({
-  createToken: t.procedure.query(() => {
-    const now = Date.now();
-    const newUser : User = {id: now, shared: false, email: '', token: now.toString()};
-    data.push(newUser)
+  createToken: t.procedure.query(async () => {
+    const newUser = await prisma.user.create({
+      data: {
+        token: uuidv4(),
+      },
+    });
     return newUser.token;
   }),
   getUser: protectedProcedure.query((req) => {
-    const useDTO: UserDTO = { ...req.ctx.user };
+    const { id, shared, email } = req.ctx.user;
+    const useDTO: UserDTO = { id, shared, email };
     return useDTO;
   }),
   updateUser: protectedProcedure
@@ -58,18 +41,20 @@ export const appRouter = t.router({
         email: z.string(),
       })
     )
-    .mutation((req) => {
-      const { user } = req.ctx;
+    .mutation(async (req) => {
+      const {
+        user: { id },
+      } = req.ctx;
+      const { shared, email } = req.input;
 
-      user.shared = req.input.shared;
-      user.email = req.input.email;
+      const user = await prisma.user.update({
+        where: { id },
+        data: { shared, email },
+      });
 
-      const userDTO: UserDTO = { ...user };
+      const userDTO: UserDTO = { id, shared, email };
       return userDTO;
     }),
-  hello: t.procedure.query((req) => {
-    return "Hello";
-  }),
 });
 
 export type AppRouter = typeof appRouter;
